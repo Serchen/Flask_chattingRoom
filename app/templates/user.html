@@ -21,12 +21,12 @@
 
 				{% elif not current_user.is_following(user) %}
 					<p>
-						<a href="{{ url_for('follow') }}">Follow</a>
+						<a href="{{ url_for('follow', username=user.username) }}">Add Friends</a>
 					</p>
 
 				{% else %}
 					<p>
-						<a href="{{ url_for('unfollow') }}">Unfollow</a>
+						<a href="{{ url_for('unfollow', username=user.username) }}">Delete Friends</a>
 					</p>
 				{% endif %}
 			</td>

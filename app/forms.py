@@ -2,10 +2,11 @@ from flask_wtf import FlaskForm  # 从flask_wtf包中导入FlaskForm类
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField  # 导入这些类
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length
 from app.models import User
+from flask_babel import lazy_gettext as _l
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
+    username = StringField(_l('Username'), validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
@@ -28,6 +29,17 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email address.')
+
+
+class ResetPasswordRequestForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Request Password Reset')
 
 
 class EditProfileForm(FlaskForm):
